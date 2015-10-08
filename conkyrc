@@ -1,0 +1,77 @@
+# Conky settings #
+background no
+update_interval 1
+
+cpu_avg_samples 2
+net_avg_samples 2
+
+override_utf8_locale yes
+
+double_buffer yes
+no_buffers yes
+
+text_buffer_size 2048
+#imlib_cache_size 0
+
+temperature_unit fahrenheit
+
+# Window specifications #
+
+own_window yes
+own_window_type override
+own_window_transparent yes
+own_window_hints undecorate,sticky,skip_taskbar,skip_pager,below
+
+border_inner_margin 0
+border_outer_margin 0
+
+minimum_size 200 1080
+maximum_width 200
+
+alignment tr
+gap_x 35
+gap_y 55
+
+# Graphics settings #
+draw_shades no
+draw_outline no
+draw_borders no
+draw_graph_borders no
+
+# Text settings #
+use_xft yes
+xftfont caviar dreams:size=8
+xftalpha 0.5
+
+uppercase no
+
+#temperature_unit celsius
+
+default_color ffffff
+
+# Lua Load  #
+lua_load ~/.conky/clock_rings.lua
+lua_draw_hook_pre clock_rings
+
+TEXT
+${voffset 8}${color e0e0e0}${font caviar dreams:size=16}${time %A}${font}${voffset -10}${alignr 50}${color ffffff}${font caviar dreams:size=38}${time %e}${font}
+${color ffffff}${voffset -32}${color ffffff}${font caviar dreams:size=18}${time %b}${font}${voffset -5s} ${color ffffff}${font caviar dreams:size=20}${time %Y}${font}${color e0e0e0}${hr}
+${voffset 140}${font caviar dreams:size=10}${alignr}VEGAS${font}
+${font caviar dreams:size=12}${color ffffff}${alignr}${weather http://weather.noaa.gov/pub/data/observations/metar/stations/ KLAS cloud_cover 30} and ${font artwill clean weather icons:size=9}${weather http://weather.noaa.gov/pub/data/observations/metar/stations/ KLAS temperature temperature 90}°F${font}
+
+$color${execi 600 bash $HOME/.conky/1d}
+Tomorrow
+${font conkyweather:size=30}${execpi 600  sed -n '5p' $HOME/.conky/weather}${font}${goto 75}${voffset -25}${execpi 600 sed -n '4p' $HOME/.conky/weather|cut -c1-20}
+${goto 75}${offset -10}${execpi 600 sed -n '4p' $HOME/.conky/weather|cut -c21-60| sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//'}
+
+${color aad3f1}${font}${voffset 60}${alignr 42}${acpitemp}°F
+${color aad3f1}${alignr 85}${font caviar dreams:size=16}CORES${font}
+
+${voffset 50}${alignr 42}${mem}
+${color aad3f1}${alignr 95}${font caviar dreams:size=16}MEMORY${font}
+
+${voffset 50}${alignr 42}${downspeed wlp4s0}
+${color aad3f1}${alignr 95}${font caviar dreams:size=16}NETWORK${font}
+
+${voffset 50}${color aad3f1}${alignr 95}${font caviar dreams:size=16}MACHINES${font}
+$color$font${execpi 5 ~/.conky/machines}
